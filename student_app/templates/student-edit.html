@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Student</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --light-gray: #f8f9fa;
+            --dark-gray: #6c757d;
+            --white: #ffffff;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7ff;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .form-container {
+            max-width: 700px;
+            margin: 30px auto;
+            padding: 30px;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .form-container:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 15px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .submit-btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Edit Student</h1>
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="student-id">Student ID</label>
+                <input
+                    type="text"
+                    id="student-id"
+                    name="student_id"
+                    value="{{ student.student_id }}"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value="{{ student.name }}"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select id="gender" name="gender" required>
+                    <option value="" disabled>Select Gender</option>
+                    <option value="male" {% if student.gender == 'male' %}selected{% endif %}>Male</option>
+                    <option value="female" {% if student.gender == 'female' %}selected{% endif %}>Female</option>
+                    <option value="other" {% if student.gender == 'other' %}selected{% endif %}>Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="batch">Batch</label>
+                <input
+                    type="text"
+                    id="batch"
+                    name="batch"
+                    value="{{ student.batch }}"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input
+                    type="number"
+                    id="age"
+                    name="age"
+                    value="{{ student.age }}"
+                    min="10"
+                    max="30"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address</label>
+                <textarea
+                    id="address"
+                    name="address"
+                    rows="3"
+                    required>{{ student.address }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="guardian">Guardian</label>
+                <select id="guardian" name="guardian" required>
+                    <option value="" disabled>Select Guardian</option>
+                    <option value="father" {% if student.guardian == 'father' %}selected{% endif %}>Father</option>
+                    <option value="mother" {% if student.guardian == 'mother' %}selected{% endif %}>Mother</option>
+                    <option value="other" {% if student.guardian == 'other' %}selected{% endif %}>Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input
+                    type="text"
+                    id="phone"
+                    name="phone"
+                    value="{{ student.phone }}"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="submit-btn">Update Student</button>
+        </form>
+    </div>
+</body>
+</html>
